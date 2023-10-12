@@ -11,7 +11,12 @@ export const QuizExpanded = ({
     editQuiz,
     resetView,
     switchEdit
-}: {quiz: Quiz; editQuiz: (id: number, updatedQuiz: Quiz) => void; resetView: () => void; switchEdit: () => void;}) => {
+}: {
+    quiz: Quiz;
+    editQuiz:(qID:number, q:Quiz)=> void; 
+    resetView: () => void;
+    switchEdit: () => void;
+}) => {
     const filteredQuestions = quiz.questionList.filter(
         (q: Question): boolean =>
             (quiz.published && q.published) || !quiz.published
@@ -52,17 +57,10 @@ export const QuizExpanded = ({
     const editQuestionSub = (questionId: number, sub: string) => {
         editQuiz(quiz.id, {
             ...quiz,
-            questionList: quiz.questionList.map((question) => {
-                if (question.id === questionId) {
-                    return {
-                        ...question, submission: sub,
-                    };
-                }
-                return question;
-            }
-            )
-        });
-    };
+            questionList: quiz.questionList.map(
+                (question:Question): Question=>questionId === question.id? {...question, submission:sub}:{...question})
+            });
+        };
 
     return (
         <>
